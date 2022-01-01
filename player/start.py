@@ -1,170 +1,102 @@
+# Lᴜᴄɪᴅᴏ™
+
 from pyrogram import Client, filters
-from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-from config import SOURCE_CODE, SUPPORT_GROUP, UPDATES_CHANNEL, BOT_USERNAME
-from plugins.tr import *
-from plugins.tr import TGPK_TEXT, VSONG_TEXT, PASTE_TEXT, INFO_TEXT, STREAM_TEXT, START_TEXT, HELP_TEXT
-from pyrogram.errors import MessageNotModified
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
-@Client.on_message(filters.command("start"))
-async def start(client, message):
-   buttons = [
-            [
-                InlineKeyboardButton("❔ Hᴇʟᴘ & Cᴏᴍᴍᴀɴᴅꜱ ❔", callback_data="help"),
-            ],
-            [
-                InlineKeyboardButton("💥 Sᴏᴜʀᴄᴇ", url=f"https://{SOURCE_CODE}"),
-                InlineKeyboardButton("Cʜᴀɴɴᴇʟ 📢", url=f"https://t.me/{UPDATES_CHANNEL}"),
-            ],
-            [
-                InlineKeyboardButton("🤖 Bᴏᴛ Lɪꜱᴛ", url=f"https://t.me/DeeCodeBots/32"),
-                InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ 👥", url=f"https://t.me/{SUPPORT_GROUP}"),
-            ],
-            [
-               InlineKeyboardButton("💞 Sᴜᴍᴍᴏɴ Mᴇ 💞", url=f"https://t.me/{BOT_USERNAME}?startgroup=true"),
-            ]
-            ]
-   reply_markup = InlineKeyboardMarkup(buttons)
-   if message.chat.type == 'private':
-      m=await message.reply_photo(
-                                  photo="https://telegra.ph/file/1ca2830c014aa6b8b62e7.jpg", 
-                                  caption=START_TEXT.format(message.from_user.first_name, message.from_user.id),
-                                  reply_markup=reply_markup
-      )      
-   else:
-      await message.reply(f"**👋 Hey VcVideoPlayer is Alive! ✨**")
 
-@Client.on_callback_query()
-async def cb_handler(client: Client, query: CallbackQuery):
-    if query.data=="help":
-        buttons = [
-            [
-                InlineKeyboardButton("Sᴛʀᴇᴀᴍ", callback_data="stream"),
-                InlineKeyboardButton ("Iɴꜰᴏ Wʜᴏɪꜱ", callback_data="info"),
-            ],
-            [
-                InlineKeyboardButton("Vɪᴅᴇᴏ Sᴏɴɢ", callback_data="vsong"),
-                InlineKeyboardButton ("Pᴀꜱᴛᴇ", callback_data="paste"),
-            ],
-            [
-               InlineKeyboardButton("Tᴇʟᴇ ✮ ɢʀᴀᴘʜ", callback_data="tgph"),
-            ],
-            [
-               InlineKeyboardButton("╰✰ Cʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"),
-               InlineKeyboardButton("Bᴀᴄᴋ", callback_data="start"),
-               InlineKeyboardButton ("Sᴜᴘᴘᴏʀᴛ ✰╮", url=f"https://t.me/{SUPPORT_GROUP}"),
-            ]
-            ]
-        reply_markup = InlineKeyboardMarkup(buttons)
-        try:
-            await query.edit_message_text(
-                HELP_TEXT,
-                reply_markup=reply_markup
-            )
-        except MessageNotModified:
-            pass
 
-    elif query.data=="tgph":
-        buttons = [
-            [
-                InlineKeyboardButton ("╰✰ Bᴀᴄᴋ", callback_data="help"),
-                InlineKeyboardButton("Uᴘᴅᴀᴛᴇ ✰╮", url=f"https://t.me/{UPDATES_CHANNEL}"),
-            ]
-            ]
-        reply_markup = InlineKeyboardMarkup(buttons)
-        try:
-            await query.edit_message_text(
-                TGPK_TEXT,
-                reply_markup=reply_markup
-            )
-        except MessageNotModified:
-            pass
+@Client.on_message(
+    filters.command("start")
+    & filters.private
+    & ~ filters.edited
+)
+async def start_(client: Client, message: Message):
+    await message.reply_text(
+        f"""<b>[💌](https://telegra.ph/file/c6c36a4bcecef600fd9be.jpg) Welcome {message.from_user.first_name}!
+**musiqo** is a bot designed for **stream** on your group, as **simple** as possible, through the **voice chats** in your group.
 
-    elif query.data=="stream":
-        buttons = [
+**❓How to use it❓**
+Press the » **COMMANDS** to view the full list of the commands of the bot!
+and Join [support](https://t.me/unitedbotsupport) to know about this bot 
+🔺Use /source for bot source code and pyrostring🔻
+<\b>""",
+      
+       
+        reply_markup=InlineKeyboardMarkup(
             [
-                InlineKeyboardButton ("╰✰ Bᴀᴄᴋ", callback_data="help"),
-                InlineKeyboardButton("Uᴘᴅᴀᴛᴇ ✰╮", url=f"https://t.me/{UPDATES_CHANNEL}"),
+                [
+                    InlineKeyboardButton(
+                        "COMMANDS", url="https://telegra.ph/𝚖𝚞𝚜𝚒𝚚𝚘-Sᴏɴɢ-06-09",
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        "Support Group", url="https://t.me/unitedbotsupport"
+                    ),
+                    InlineKeyboardButton(
+                        "Updates Channel", url="https://t.me/Tubots"
+                    ),
+                    InlineKeyboardButton(
+                        "Credits", url="https://t.me/Psycho_Bots"
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        "Add to your group", url="https://t.me/Musiqorobot?startgroup=true"
+                    ) 
+                ]
             ]
-            ]
-        reply_markup = InlineKeyboardMarkup(buttons)
-        try:
-            await query.edit_message_text(
-                STREAM_TEXT,
-                reply_markup=reply_markup
-            )
-        except MessageNotModified:
-            pass
+        )
+    )
 
-    elif query.data=="paste":
-        buttons = [
+@Client.on_message(
+    filters.command("start")
+    & filters.group
+    & ~ filters.edited
+)
+async def start(client: Client, message: Message):
+    await message.reply_text(
+        "Know how to use",
+        reply_markup=InlineKeyboardMarkup(
             [
-                InlineKeyboardButton ("╰✰ Bᴀᴄᴋ", callback_data="help"),
-                InlineKeyboardButton("Uᴘᴅᴀᴛᴇ ✰╮", url=f"https://t.me/{UPDATES_CHANNEL}"),
+                [
+                    InlineKeyboardButton(
+                        "Support", url="https://t.me/Tubots"
+                    ),
+                    InlineKeyboardButton(
+                        "Report bugs", url="https://t.me/Unitedbotsupport"
+                    )
+                ],    
+                [    
+                    InlineKeyboardButton(
+                        "Close", callback_data="close"
+                    )
+                ]
             ]
-            ]
-        reply_markup = InlineKeyboardMarkup(buttons)
-        try:
-            await query.edit_message_text(
-                PASTE_TEXT,
-                reply_markup=reply_markup
-            )
-        except MessageNotModified:
-            pass
+        )
+    )
 
-    elif query.data=="vsong":
-        buttons = [
+@Client.on_message(
+    filters.command("source")
+    & filters.private
+    & ~ filters.edited
+)
+async def source(client: Client, message: Message):
+    await message.reply_text(
+        f"""<b>Hi {message.from_user.first_name}!
+**Here is bot source code and pyrostring generator For help contact at support group**
+ </b>""",
+        reply_markup=InlineKeyboardMarkup(
             [
-                InlineKeyboardButton ("╰✰ Bᴀᴄᴋ", callback_data="help"),
-                InlineKeyboardButton("Uᴘᴅᴀᴛᴇ ✰╮", url=f"https://t.me/{UPDATES_CHANNEL}"),
+                [
+                    InlineKeyboardButton(
+                        "github repo", url="https://github.com/LucidoXD/musiqo"
+                    ),
+                    InlineKeyboardButton(
+                        "string generator", url="https://replit.com/@basimon/GMusiqopyrostring"
+                    )
+                ]
             ]
-            ]
-        reply_markup = InlineKeyboardMarkup(buttons)
-        try:
-            await query.edit_message_text(
-                VSONG_TEXT,
-                reply_markup=reply_markup
-            )
-        except MessageNotModified:
-            pass
-
-    elif query.data=="info":
-        buttons = [
-            [
-                InlineKeyboardButton ("╰✰ Bᴀᴄᴋ", callback_data="help"),
-                InlineKeyboardButton("Uᴘᴅᴀᴛᴇ ✰╮", url=f"https://t.me/{UPDATES_CHANNEL}"),
-            ]
-            ]
-        reply_markup = InlineKeyboardMarkup(buttons)
-        try:
-            await query.edit_message_text(
-                INFO_TEXT,
-                reply_markup=reply_markup
-            )
-        except MessageNotModified:
-            pass
-
-    elif query.data=="start":
-        buttons = [
-            [
-                InlineKeyboardButton("❔ Hᴇʟᴘ & Cᴏᴍᴍᴀɴᴅꜱ ❔", callback_data="help"),
-            ],
-            [
-                InlineKeyboardButton("💥 Sᴏᴜʀᴄᴇ", url=f"https://{SOURCE_CODE}"),
-                InlineKeyboardButton("Cʜᴀɴɴᴇʟ 📢", url=f"https://t.me/{UPDATES_CHANNEL}"),
-            ],
-            [
-                InlineKeyboardButton("🤖 Bᴏᴛ Lɪꜱᴛ", url=f"https://t.me/DeeCodeBots/32"),
-                InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ 👥", url=f"https://t.me/{SUPPORT_GROUP}"),
-            ],
-            [
-               InlineKeyboardButton("💞 Sᴜᴍᴍᴏɴ Mᴇ 💞", url=f"https://t.me/{BOT_USERNAME}?startgroup=true"),
-            ]
-            ]
-        reply_markup = InlineKeyboardMarkup(buttons)
-        try:
-            await query.edit_message_text(
-                START_TEXT,
-                reply_markup=reply_markup
-            )
-        except MessageNotModified:
-            pass
+        )
+    )
+ 
